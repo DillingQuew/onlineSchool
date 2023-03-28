@@ -75,6 +75,10 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->hasMany(UserLesson::class, ['user_id' => 'id']);
     }
 
+    public function create() {
+        return $this->save(false);
+    }
+
     public static function findIdentity($id)
     {
         return User::findOne($id);

@@ -58,7 +58,16 @@ use yii\web\Response;
 
     public function actionSignup() {
         $model = new SignupForm();
-        return $this->render('signup', ['model'=>$model]);
+
+        if(Yii::$app->request->isPost) {
+            $model->load(Yii::$app->request->post());
+            if($model->singup()) {
+                return $this->redirect(['auth/login']);
+            }
+
+
+        }
+        return $this->render('singup', ['model'=>$model]);
     }
 
 }
