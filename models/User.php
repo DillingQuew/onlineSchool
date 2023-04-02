@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 
 /**
@@ -73,6 +74,15 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public function getUserLessons()
     {
         return $this->hasMany(UserLesson::class, ['user_id' => 'id']);
+    }
+
+    public function getLessons() {
+        return $this->hasMany(Lesson::class, ['id' => 'lesson_id'])
+            ->via('userLessons');
+    }
+    public function getLessonss() {
+        return $this->hasMany(Lesson::class, ['id' => 'lesson_id'])
+            ->via('userLessons');
     }
 
     public function create() {

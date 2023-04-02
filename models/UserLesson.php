@@ -70,4 +70,16 @@ class UserLesson extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
+
+    public static function getLessonWithStatus($id) {
+        return UserLesson::find()->where(['user_id' => Yii::$app->user->id, 'lesson_id' => $id])->one();
+    }
+
+    public static function getViewLessonStatus($user) {
+        return (new \yii\db\Query())
+            ->select('*')->from('lesson')
+            ->leftJoin('userLesson', '`lesson`.`id` = `userLesson`.`lesson_id`')
+            ->where(['userLesson.user_id' => $user->id])
+            ->all();
+    }
 }

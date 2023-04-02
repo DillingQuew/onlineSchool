@@ -58,4 +58,8 @@ class CompletedCourse extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
+    public static function getCountLessons($id) {
+        return CompletedCourse::find()->where(['user_id'=>$id])->one();
+    }
+
 }

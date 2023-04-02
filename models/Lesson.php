@@ -57,4 +57,11 @@ class Lesson extends \yii\db\ActiveRecord
     {
         return $this->hasMany(UserLesson::class, ['lesson_id' => 'id']);
     }
+
+    public static function getCountLessons() {
+      $count = (new \yii\db\Query())
+            ->select('count(*)')->from('lesson')
+            ->all();
+      return $count[0]['count(*)'];
+    }
 }

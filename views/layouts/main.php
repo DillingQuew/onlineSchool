@@ -39,16 +39,15 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            ['label' => 'SignUp', 'url' => ['/auth/signup']],
+            ['label' => 'Главная', 'url' => ['/site/index']],
+            ['label' => 'Зарегистрироваться', 'url' => ['/auth/signup']],
             Yii::$app->user->isGuest
-                ? ['label' => 'Login', 'url' => ['/auth/login']]
+                ?
+                ['label' => 'Войти', 'url' => ['/auth/login']]
                 : '<li class="nav-item">'
                     . Html::beginForm(['/auth/logout'])
                     . Html::submitButton(
-                        'Logout (' . Yii::$app->user->identity->email . ')',
+                        'Выйти (' . Yii::$app->user->identity->firstName . ')',
                         ['class' => 'nav-link btn btn-link logout']
                     )
                     . Html::endForm()

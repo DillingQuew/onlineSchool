@@ -2,8 +2,13 @@
 
 namespace app\controllers;
 
+use app\models\CompletedCourse;
+use app\models\Lesson;
+use app\models\User;
+use app\models\UserLesson;
 use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
@@ -61,7 +66,31 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        if (!Yii::$app->user->isGuest) {
+
+
+            $data = [];
+            $user = User::find()->where(['id' => Yii::$app->user->id])->one();
+            $users = User::find()->select('*')->where(['id' => $user])->with('userLessons')->all();
+            $data['lessons'] = UserLesson::getViewLessonStatus($users[0]);
+//            $data['count'] = Lesson::getCountLessons();
+            $data['count'] = CompletedCourse::getCountLessons(Yii::$app->user->id);
+//            var_dump($data['lessons']); die;
+            $data['countAll'] = Lesson::getCountLessons();
+            if ($data['count']->lessonsDone == Lesson::getCountLessons()) {
+                $data['count']->statusCourse = 1;
+                $data['count']->save();
+
+                $data['congr'] = true;
+            } else {
+                $data['congr'] = false;
+            }
+
+            return $this->render('index', ['data' => $data]);
+        }
+        else  {
+            return $this->render('index');
+        }
     }
 
     /**
@@ -102,4 +131,6 @@ class SiteController extends Controller
     public function actionSay($message = "привет") {
         return $this->render('say', ['message' => $message]);
     }
+
+
 }
